@@ -10,6 +10,35 @@
  * Copyright 2011-2020 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+.video-container {
+    display: flex;
+}
+
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+    margin-left: 25px;
+    display: flex;
+    flex: 1;
+    margin-right: 20px;
+}
+
+    .videoWrapper:last-child {
+        margin-right: 25px; /* Son videoya sağ taraftan boşluk bırakma */
+    }
+
+    .videoWrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -159,9 +188,9 @@ sup {
 }
 
 a {
-  color: #bd5d38;
-  text-decoration: none;
-  background-color: transparent;
+    color: #349cde;
+    text-decoration: none;
+    background-color: transparent;
 }
 a:hover {
   color: #824027;
@@ -6075,7 +6104,7 @@ a.close.disabled {
 }
 
 .bg-primary {
-  background-color: #bd5d38 !important;
+    background-color: #349cde !important;
 }
 
 a.bg-primary:hover, a.bg-primary:focus,
@@ -9777,7 +9806,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #bd5d38 !important;
+    color: #349cde !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
@@ -10078,9 +10107,9 @@ p.lead {
 .social-icons .social-icon:last-child {
   margin-right: 0;
 }
-.social-icons .social-icon:hover {
-  background-color: #bd5d38;
-}
+    .social-icons .social-icon:hover {
+        background-color: #349cde;
+    }
 
 .dev-icons {
   font-size: 3rem;
@@ -10104,7 +10133,7 @@ section.resume-section .resume-section-content {
     min-height: 100vh;
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 992px) { 
   section.resume-section {
     padding-left: 3rem;
     padding-right: 3rem;
