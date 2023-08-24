@@ -36,20 +36,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach(var item in Model)
+                                        @foreach (var item in Model)
                                         {
-                                        <tr>
-                                            <td>@item.ID</td>
-                                            <td>@item.Yetenek</td>
-                                            <td>
-                                                <div class="progress progress-xs">
-                                                    <div class="progress-bar progress-bar-danger" style="width: @item.Oran%"></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="badge bg-danger">@item.Oran%</span></td>
-                                            <td> <a href="/Yetenek/YetenekDuzenle/@item.ID" class="btn btn-info btn-sm"> <i class="fas fa-pencil-alt"> </i> Düzenle</a></td>
-                                            <td> <a href="/Yetenek/YetenekSil/@item.ID" class="btn btn-danger btn-sm"> <i class="fas fa-trash"> </i> Sil</a></td>
-                                        </tr>
+                                            <tr>
+                                                <td>@item.ID</td>
+                                                <td>@item.Yetenek</td>
+                                                <td>
+                                                    <div class="progress progress-xs">
+                                                        <div class="progress-bar progress-bar-danger" style="width: @item.Oran%"></div>
+                                                    </div>
+                                                </td>
+                                                <td><span class="badge bg-danger">@item.Oran%</span></td>
+                                                <td> <a href="/Yetenek/YetenekDuzenle/@item.ID" class="btn btn-info btn-sm"> <i class="fas fa-pencil-alt"> </i> Düzenle</a></td>
+                                                <td> <a href="/Yetenek/YetenekSil/@item.ID" class="btn btn-danger btn-sm sil" data-id="@item.ID"> <i class="fas fa-trash"> </i> Sil</a></td>
+                                            </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -62,5 +62,65 @@
         </section>
         <!-- /.content -->
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Tüm "silButton" sınıfına sahip öğeleri seç
+        var deleteButtons = document.querySelectorAll(".sil");
+
+        // Her bir buton için olay dinleyici ekle
+        deleteButtons.forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                var mesajid = button.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Silmek istediğinizden emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        performDelete(mesajid);
+                    }
+                });
+            });
+        });
+
+        function performDelete(mesajid) {
+            $.ajax({
+                url: '/Yetenek/YetenekSil', // Controller işleminin URL'sini doğru şekilde belirtin
+                method: 'POST', // Veya GET, PUT, DELETE
+                data: { id: mesajid }, // İsteğe gönderilecek veriler
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success', // İkon tipi
+                        title: 'Silindi!', // Başlık
+                        text: 'İşlem başarıyla tamamlandı.', // Metin içeriği
+                        showConfirmButton: false, // Onay butonunu gizle
+                        timer: 1500 // Otomatik kapatılma süresi (isteğe bağlı)
+                    });
+
+                    // Belirli bir süre sonra sayfanın yeniden yüklenmesini sağla
+                    setTimeout(function () {
+                        // Takvim controllerını tetiklemek için ayrı bir AJAX isteği gönder
+                        // Burada triggerCalendarAction() veya gerekli işlemi çağırabilirsiniz
+                        location.reload(); // Sayfayı yeniden yükle
+                    }, 1500);
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'İşlem sırasında bir hata oluştu.',
+                        'error'
+                    );
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>

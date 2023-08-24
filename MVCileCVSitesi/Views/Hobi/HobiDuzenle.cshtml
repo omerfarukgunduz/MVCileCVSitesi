@@ -1,0 +1,19 @@
+@model MVCileCVSitesi.Models.Entity.Tbl_Hobilerim
+
+@{
+    ViewBag.Title = "HobiDuzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<br />
+<h4>Hobi Düzenleme Sayfasý</h4>
+<form method="post">
+    @Html.Label("Baþlýk")
+    @Html.TextBoxFor(x => x.Aciklama1, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.Aciklama1, "", new { @style = "color:red" })
+    <br />
+    @Html.Label("Açýklama")
+    @Html.TextBoxFor(x => x.Aciklama2, new { @class = "form-control" })
+    <br />
+   
+    <button class="btn btn-info">Kaydet</button>
+</form>

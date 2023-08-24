@@ -6,17 +6,86 @@
 }
 
 <br />
-<h2>Hobi Düzenleme Sayfası</h2>
-<br />
-<form method="post">
+<h2>Hobilerim </h2>
+
+<table class="table table-bordered">
+    <tr>
+        <td>ID</td>
+        <td>Başlık</td>
+        <td>Açıklama</td>
+        <td>Sil</td>
+        <td>Düzenle</td>
+
+    </tr>
     @foreach (var item in Model)
     {
-        <label>Açıklama 1 </label>
-        <textarea rows="5" class="form-control" name="Aciklama1">@item.Aciklama1 </textarea>
-
-        <label>Açıklama 2</label>
-        <textarea rows="5" class="form-control" name="Aciklama2">@item.Aciklama2 </textarea>
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Aciklama1</td>
+            <td>@item.Aciklama2</td>
+            <td><a href="/Hobi/HobiSil/@item.ID" class="btn btn-danger sil" data-id="@item.ID">Sil</a></td>
+            <td><a href="/Hobi/HobiDuzenle/@item.ID" class="btn btn-warning">Düzenle</a></td>
+        </tr>
     }
-    <br />
-    <button class="btn btn-success">Güncelle</button>
-</form>
+</table>
+<a href="/Hobi/HobiEkle/" class="btn btn-primary">Yeni Hobi Ekle</a>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+        // Tüm "silButton" sınıfına sahip öğeleri seç
+        var deleteButtons = document.querySelectorAll(".sil");
+
+        // Her bir buton için olay dinleyici ekle
+        deleteButtons.forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                var hobiid = button.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Silmek istediğinizden emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        performDelete(hobiid);
+                    }
+                });
+            });
+        });
+
+        function performDelete(hobiid) {
+            $.ajax({
+                url: '/Hobi/HobiSil', // Controller işleminin URL'sini doğru şekilde belirtin
+                method: 'POST', // Veya GET, PUT, DELETE
+                data: { id: hobiid }, // İsteğe gönderilecek veriler
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success', // İkon tipi
+                        title: 'Silindi!', // Başlık
+                        text: 'İşlem başarıyla tamamlandı.', // Metin içeriği
+                        showConfirmButton: false, // Onay butonunu gizle
+                        timer: 1500 // Otomatik kapatılma süresi (isteğe bağlı)
+                    });
+
+                    // Belirli bir süre sonra sayfanın yeniden yüklenmesini sağla
+                    setTimeout(function () {
+                        // Takvim controllerını tetiklemek için ayrı bir AJAX isteği gönder
+                        // Burada triggerCalendarAction() veya gerekli işlemi çağırabilirsiniz
+                        location.reload(); // Sayfayı yeniden yükle
+                    }, 1500);
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'İşlem sırasında bir hata oluştu.',
+                        'error'
+                    );
+                }
+            });
+        }
+</script>

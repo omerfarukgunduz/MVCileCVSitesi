@@ -19,14 +19,74 @@
     </tr>
     @foreach (var item in Model)
     {
-<tr>
-    <td>@item.ID</td>
-    <td>@item.Baslik</td>
-    <td>@item.AltBaslik</td>
-    <td>@item.Tarih</td>
-    <td><a href="/Deneyimlerim/DeneyimSil/@item.ID" class="btn btn-danger">Sil</a></td>
-    <td><a href="/Deneyimlerim/DeneyimGetir/@item.ID" class="btn btn-warning">Düzenle</a></td>
-</tr>
+        <tr>
+            <td>@item.ID</td>
+            <td>@item.Baslik</td>
+            <td>@item.AltBaslik</td>
+            <td>@item.Tarih</td>
+            <td><a href="/Deneyimlerim/DeneyimSil/@item.ID" class="btn btn-danger sil" data-id="@item.ID">Sil</a></td>
+            <td><a href="/Deneyimlerim/DeneyimGetir/@item.ID" class="btn btn-warning">Düzenle</a></td>
+        </tr>
     }
 </table>
 <a href="/Deneyimlerim/DeneyimEkle" class="btn btn-primary">Yeni Deneyim Ekle</a>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+        // Tüm "silButton" sınıfına sahip öğeleri seç
+        var deleteButtons = document.querySelectorAll(".sil");
+
+        // Her bir buton için olay dinleyici ekle
+        deleteButtons.forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                var deneyimid = button.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Silmek istediğinizden emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        performDelete(deneyimid);
+                    }
+                });
+            });
+        });
+
+        function performDelete(deneyimid) {
+            $.ajax({
+                url: '/Deneyimlerim/DeneyimSil', // Controller işleminin URL'sini doğru şekilde belirtin
+                method: 'POST', // Veya GET, PUT, DELETE
+                data: { id: deneyimid }, // İsteğe gönderilecek veriler
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success', // İkon tipi
+                        title: 'Silindi!', // Başlık
+                        text: 'İşlem başarıyla tamamlandı.', // Metin içeriği
+                        showConfirmButton: false, // Onay butonunu gizle
+                        timer: 1500 // Otomatik kapatılma süresi (isteğe bağlı)
+                    });
+
+                    // Belirli bir süre sonra sayfanın yeniden yüklenmesini sağla
+                    setTimeout(function () {
+                        // Takvim controllerını tetiklemek için ayrı bir AJAX isteği gönder
+                        // Burada triggerCalendarAction() veya gerekli işlemi çağırabilirsiniz
+                        location.reload(); // Sayfayı yeniden yükle
+                    }, 1500);
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'İşlem sırasında bir hata oluştu.',
+                        'error'
+                    );
+                }
+            });
+        }
+</script>

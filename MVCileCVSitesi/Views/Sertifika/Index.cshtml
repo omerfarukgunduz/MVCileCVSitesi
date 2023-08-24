@@ -32,7 +32,7 @@
                                     @foreach (var item in Model)
                                     {
                                         <div class="time-label">
-                                            <a href="/Sertifika/SertifikaGetir/@item.ID" class="btn btn-success"> 
+                                            <a href="/Sertifika/SertifikaGetir/@item.ID" class="btn btn-success">
                                                 <span class="bg-success">
                                                     @item.Tarih
                                                 </span>
@@ -40,13 +40,17 @@
                                         </div>
                                         <!-- /.timeline-label -->
                                         <!-- timeline item -->
-                                        <div>
-                                            <div class="timeline-item">
-                                                <div class="timeline-body">
-                                                    @item.Aciklama
-                                                </div>
+                                <div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-body" style="display:flex">
+                                            <div>@item.Aciklama</div>
+                                            <div style="margin-left: auto;">
+                                                <!-- Sağ tarafa hizalama ekledik -->
+                                                <a data-id="@item.ID" href="/Sertifika/SertifikaSil/@item.ID" class="btn btn-danger sil">Sil</a>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
                                     }
                                 </div>
                                 <a href="/Sertifika/YeniSertifika" class="btn btn-primary">Yeni Sertifika Girişi</a>
@@ -60,6 +64,68 @@
         </div>
         <!-- /.row -->
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Tüm "silButton" sınıfına sahip öğeleri seç
+        var deleteButtons = document.querySelectorAll(".sil");
+
+        // Her bir buton için olay dinleyici ekle
+        deleteButtons.forEach(function (button) {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+                var sertifikaid = button.getAttribute("data-id");
+
+                Swal.fire({
+                    title: 'Emin misiniz?',
+                    text: "Silmek istediğinizden emin misiniz?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'İptal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        performDelete(sertifikaid);
+                    }
+                });
+            });
+        });
+
+        function performDelete(sertifikaid) {
+            $.ajax({
+                url: '/Sertifika/SertifikaSil', // Controller işleminin URL'sini doğru şekilde belirtin
+                method: 'POST', // Veya GET, PUT, DELETE
+                data: { id: sertifikaid }, // İsteğe gönderilecek veriler
+                success: function (data) {
+                    Swal.fire({
+                        icon: 'success', // İkon tipi
+                        title: 'Silindi!', // Başlık
+                        text: 'İşlem başarıyla tamamlandı.', // Metin içeriği
+                        showConfirmButton: false, // Onay butonunu gizle
+                        timer: 1500 // Otomatik kapatılma süresi (isteğe bağlı)
+                    });
+
+                    // Belirli bir süre sonra sayfanın yeniden yüklenmesini sağla
+                    setTimeout(function () {
+                        // Takvim controllerını tetiklemek için ayrı bir AJAX isteği gönder
+                        // Burada triggerCalendarAction() veya gerekli işlemi çağırabilirsiniz
+                        location.reload(); // Sayfayı yeniden yükle
+                    }, 1500);
+                },
+                error: function () {
+                    Swal.fire(
+                        'Hata!',
+                        'İşlem sırasında bir hata oluştu.',
+                        'error'
+                    );
+                }
+            });
+        }
+    </script>
+
+
 </body>
 </html>
 

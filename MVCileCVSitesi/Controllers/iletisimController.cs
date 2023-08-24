@@ -18,5 +18,12 @@ namespace MVCileCVSitesi.Controllers
             var mesajlar = repo.List();
             return View(mesajlar);
         }
+
+        public ActionResult mesajsil(int id)
+        {
+            Tbl_iletisim t = repo.Find(x => x.ID == id);
+            repo.TDelete(t);
+            return (RedirectToAction("Index"));
+        }
     }
 }

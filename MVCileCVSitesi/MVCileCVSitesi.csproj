@@ -2488,6 +2488,8 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\AdminEkle.cshtml" />
     <Content Include="Views\Admin\AdminDuzenle.cshtml" />
+    <Content Include="Views\Hobi\HobiEkle.cshtml" />
+    <Content Include="Views\Hobi\HobiDuzenle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

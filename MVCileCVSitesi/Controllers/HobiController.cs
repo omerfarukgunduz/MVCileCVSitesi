@@ -27,5 +27,42 @@ namespace MVCileCVSitesi.Controllers
             repo.TUpdate(t);
             return RedirectToAction("Index");
         }
+        public ActionResult HobiEkle()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult HobiEkle(Tbl_Hobilerim p)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("HobiDuzenle");
+            }
+            repo.TAdd(p);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult HobiSil(int id)
+        {
+            Tbl_Hobilerim t = repo.Find(x => x.ID == id);
+            repo.TDelete(t);
+            return (RedirectToAction("Index"));
+        }
+
+        public ActionResult HobiDuzenle(int id)
+        {
+            var hobi = repo.Find(x => x.ID == id);
+            return View(hobi);
+        }
+        [HttpPost]
+        public ActionResult HobiDuzenle(Tbl_Hobilerim t)
+        {
+            var hobi = repo.Find(x => x.ID == t.ID);
+            hobi.Aciklama1 = t.Aciklama1;
+            hobi.Aciklama2 = t.Aciklama2;
+            repo.TUpdate(hobi);
+            return RedirectToAction("Index");
+        }
     }
 }
