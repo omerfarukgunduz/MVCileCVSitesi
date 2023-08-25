@@ -41,15 +41,12 @@
             if (!isValid) {
                 event.preventDefault();
             } else {
-                var isConfirmed = window.confirm("Mesajınız Gönderilsin mi?");
-                if (isConfirmed) {
-                    // Mesaj gönderme işlemleri burada yapılabilir.
-                    window.alert('Mesajınız gönderildi! Mailiniz üzerinden iletişime geçilecektir.');
-                }
+                // Eğer gerekli alanlar doldurulmuşsa
+                // Mesaj gönderme işlemleri burada yapılabilir.
+                window.alert('Mesajınız gönderildi! Mailiniz üzerinden iletişime geçilecektir.');
             }
         });
     </script>
-
 
     <style>
         .error {
