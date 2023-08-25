@@ -1,44 +1,60 @@
-﻿
-<div class="resume-section-content">
-    <form id="contact-form" method="post">
-        <h2 class="mb-5">İletişim</h2>
-        <label>Ad Soyad</label>
-        <input type="text" class="form-control" name="Adsoyad" placeholder="Adınız ve soyadınız" required />
-        <label>Mail</label>
-        <input type="email" class="form-control" name="Mail" placeholder="E-posta adresiniz" required />
-        <label>Konu</label>
-        <input type="text" class="form-control" name="Konu" placeholder="Mesaj konusu" required />
-        <label>Mesaj</label>
-        <input type="text" class="form-control" name="Mesaj" placeholder="Mesajınız" required />
-        <br />
-        <button class="btn btn-info">Mesaj Gönder</button>
-    </form>
-</div>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="resume-section-content">
+        <form id="contact-form" method="post">
+            <h2 class="mb-5">İletişim</h2>
+            <label>Ad Soyad</label>
+            <input type="text" class="form-control" name="Adsoyad" placeholder="Adınız ve soyadınız" required />
+            <label>Mail</label>
+            <input type="email" class="form-control" name="Mail" placeholder="E-posta adresiniz" required />
+            <label>Konu</label>
+            <input type="text" class="form-control" name="Konu" placeholder="Mesaj konusu" required />
+            <label>Mesaj</label>
+            <input type="text" class="form-control" name="Mesaj" placeholder="Mesajınız" required />
+            <br />
+            <button class="btn btn-info">Mesaj Gönder</button>
+        </form>
+    </div>
 
-<script>
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        var form = event.target;
-        var inputs = form.querySelectorAll('input');
-        var isValid = true;
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function (event) {
+            var form = event.target;
+            var inputs = form.querySelectorAll('input');
+            var isValid = true;
 
-        for (var i = 0; i < inputs.length; i++) {
-            if (!inputs[i].value) {
-                isValid = false;
-                inputs[i].classList.add('error');
-            } else {
-                inputs[i].classList.remove('error');
+            for (var i = 0; i < inputs.length; i++) {
+                if (!inputs[i].value) {
+                    isValid = false;
+                    inputs[i].classList.add('error');
+                } else {
+                    inputs[i].classList.remove('error');
+                }
             }
-        }
 
-        if (!isValid) {
-            event.preventDefault();
-            alert('Lütfen tüm alanları doldurun.');
-        }
-    });
-</script>
+            if (!isValid) {
+                event.preventDefault();
+            } else {
+                var isConfirmed = window.confirm("Mesajınız Gönderilsin mi?");
+                if (isConfirmed) {
+                    // Mesaj gönderme işlemleri burada yapılabilir.
+                    window.alert('Mesajınız gönderildi! Mailiniz üzerinden iletişime geçilecektir.');
+                }
+            }
+        });
+    </script>
 
-<style>
-    .error {
-        border-color: red;
-    }
-</style>
+
+    <style>
+        .error {
+            border-color: red;
+        }
+    </style>
+</body>
+</html>
